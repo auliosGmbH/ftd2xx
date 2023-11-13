@@ -5,8 +5,16 @@ from ctypes import *
 
 STRING = c_char_p
 _libraries = {}
-_libraries["/usr/local/lib/libftd2xx.dylib"] = CDLL("/usr/local/lib/libftd2xx.dylib")
+try:
+  _libraries["/usr/local/lib/libftd2xx.dylib"] = CDLL("/usr/local/lib/libftd2xx.dylib")
+except:
 
+  package_name = "libftd2xx.dylib"
+  import _ftd2xx_lib
+  _path = os.path.dirname(_ftd2xx_lib.__file__)
+  _full_path = os.path.join(_path, package_name)
+
+  _libraries["/usr/local/lib/libftd2xx.dylib"] = CDLL(_full_path)
 
 FT_IO_ERROR = 4
 FT_INVALID_BAUD_RATE = 7
