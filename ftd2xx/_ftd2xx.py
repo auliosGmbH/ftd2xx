@@ -90,15 +90,13 @@ except OSError:  # 32-bit, or 64-bit library with plain name
     try:
         _libraries["ftd2xx.dll"] = WinDLL("ftd2xx.dll")
     except OSError as e:
-        if e.winerror == 126:
-            error_message = (
-                e.args[1] + "Unable to find D2XX DLL. "
-                "Please make sure that the directory containing your DLL is in "
-                "one (or both) environment variables: 'PATH', 'FTD2XX_DLL_DIR'. "
-                "Also, you must use 'ftd2xx.dll' or 'ftd2xx64.dll' as the filename."
-            )
-            e.args = (e.args[0], error_message) + e.args[2:]
-        raise e
+        package_name = "ftd2xx64.dll"
+        import _ftd2xx_lib
+        _path = os.path.dirname(_ftd2xx_lib.__file__)
+        _full_path = os.path.join(_path, "amd64", package_name)
+        _libraries["ftd2xx.dll"] = WinDLL(_full_path)
+        print("using internal lib")
+
 
 
 FT_HANDLE = PVOID
