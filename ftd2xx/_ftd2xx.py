@@ -93,9 +93,9 @@ except OSError:  # 32-bit, or 64-bit library with plain name
         package_name = "ftd2xx64.dll"
         import _ftd2xx_lib
         _path = os.path.dirname(_ftd2xx_lib.__file__)
-        _full_path = os.path.join(_path, "amd64", package_name)
+        _full_path = os.path.join(_path, package_name)
         _libraries["ftd2xx.dll"] = WinDLL(_full_path)
-        print("using internal lib")
+        print("Using internal ftd2xx.dll from package directory.")
 
 
 
